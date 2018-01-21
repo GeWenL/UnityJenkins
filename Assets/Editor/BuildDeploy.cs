@@ -17,7 +17,7 @@ using Debug = UnityEngine.Debug;
 public class BuildDeploy : Editor
 {
     private static string _bundleIdentifier = "com.xx.xxx";  // 打包的签名
-    private static string _version = "1.0";   // 版本号
+    private static string _version = "2.0";   // 版本号
     public static string PUBLISH_PATH = Application.dataPath + "/../Publish/"; // 发布的资源目录，注意这个是apk的输出路径而不是ab包的输出路径
     
 
@@ -65,9 +65,7 @@ public class BuildDeploy : Editor
 
 
         // 开始构建
-        int startTime = Environment.TickCount;
 		string msg = BuildPipeline.BuildPlayer(options);
-        Debug.Log("打包耗时: " + (Environment.TickCount - startTime));
         if (!string.IsNullOrEmpty(msg))
         {
             Debug.LogError(msg);
@@ -114,6 +112,7 @@ public class BuildDeploy : Editor
             {
 //#if UNITY_IOS
                 // TeamID ios打包使用
+				PlayerSettings.iOS.appleEnableAutomaticSigning = true;
                 PlayerSettings.iOS.appleDeveloperTeamID = args[i + 1];
 //#endif
             }
