@@ -20,9 +20,7 @@ node{
     }
 
     stage('制作整包') {
-        echo ${bundleID}
-        echo ${teamID}
-        
+
         def unitybin = '/Applications/Unity/Unity.app/Contents/MacOS/Unity'
         def build = 'OnAutoBuild'
  		sh "${unitybin} -batchMode -quit -projectPath ${workspace} -executeMethod EditorToolMenu.${build} -bundleId ${bundleID} -platform ${platform} -teamId ${teamID}"
