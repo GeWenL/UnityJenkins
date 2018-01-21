@@ -26,7 +26,7 @@ public class BuildDeploy : Editor
     // 编译程序
     public static void Build() 
     {
-        EditorUserBuildSettings.connectProfiler = false;
+        // EditorUserBuildSettings.connectProfiler = false;
 
         // 打包成apk
         var version = _version;
@@ -46,7 +46,7 @@ public class BuildDeploy : Editor
             File.Delete(PUBLISH_PATH + targetName);
         }
 
-		PlayerSettings.bundleIdentifier = "com.square.naoligame3";
+		// PlayerSettings.bundleIdentifier = "com.square.naoligame3";
         PlayerSettings.bundleVersion = version;
         PlayerSettings.iOS.buildNumber = _buildVersion;
 
