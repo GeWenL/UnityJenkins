@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/TestJenkins.unity
-    guid: 5e60904c400a54db1b4247cb53742ad6
+    path: Assets/TestScene.unity
+    guid: a9533084b7e584d0ab76bf80d8dbad66
