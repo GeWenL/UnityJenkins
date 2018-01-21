@@ -47,7 +47,7 @@ public class BuildDeploy : Editor
 
 		PlayerSettings.applicationIdentifier = _bundleIdentifier;
         PlayerSettings.bundleVersion = version;
-
+        PlayerSettings.iOS.buildNumber = 2.1;
 
         // 当前场景都打包进app里面
         var scenes = new string[EditorBuildSettings.scenes.Length];
@@ -77,6 +77,7 @@ public class BuildDeploy : Editor
     // 解析命令行
     public static void ParseCommandLine()
     {
+        PlayerSettings.iOS.appleEnableAutomaticSigning = false;
         // 设置当前的id
         string[] args = Environment.GetCommandLineArgs();
         if (args.Length <= 0) return;
