@@ -18,6 +18,7 @@ public class BuildDeploy : Editor
 {
     private static string _bundleIdentifier = "com.xx.xxx";  // 打包的签名
     private static string _version = "2.0";   // 版本号
+    private static string _buildVersion = "2.1";   // 版本号
     public static string PUBLISH_PATH = Application.dataPath + "/../Publish/"; // 发布的资源目录，注意这个是apk的输出路径而不是ab包的输出路径
     
 
@@ -47,7 +48,7 @@ public class BuildDeploy : Editor
 
 		PlayerSettings.applicationIdentifier = _bundleIdentifier;
         PlayerSettings.bundleVersion = version;
-        PlayerSettings.iOS.buildNumber = 2.1;
+        PlayerSettings.iOS.buildNumber = _buildVersion;
 
         // 当前场景都打包进app里面
         var scenes = new string[EditorBuildSettings.scenes.Length];
