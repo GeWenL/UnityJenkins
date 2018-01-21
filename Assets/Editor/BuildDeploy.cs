@@ -112,10 +112,10 @@ public class BuildDeploy : Editor
             }
             else if (arg == "-teamId")
             {
-#if UNITY_IOS
+//#if UNITY_IOS
                 // TeamID ios打包使用
                 PlayerSettings.iOS.appleDeveloperTeamID = args[i + 1];
-#endif
+//#endif
             }
         }
 
