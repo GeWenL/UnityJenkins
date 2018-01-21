@@ -25,6 +25,16 @@ node{
  		sh "${unitybin} -batchMode -quit -projectPath ${workspace} -executeMethod EditorToolMenu.${build} -bundleId ${bundleID} -platform ${platform} -teamId ${teamID}"
     }
 
+    stage('ios build ipa') {
+        if (params.平台 == 'ios') {
+            // ios平台需要调用xcode打出ipa包
+            sh "xcodebuild clean -project Publish/Unity-iPhone/Unity-iPhone.xcodeproj -configuration Release -alltargets"
+            sh "xcodebuild archive -project Publish/Unity-iPhone/Unity-iPhone.xcodeproj -scheme Unity-iPhone -archivePath Publish/Unity-iPhone.xcarchive"
+            sh "xcodebuild -exportArchive -archivePath Publish/Unity-iPhone.xcarchive -exportPath Publish -exportOptionsPlist Build/CodeSign/ios/exportOptions.plist  CODE_SIGN_IDENTITY=${CODE_SIGN_IDENTITY} PROVISIONING_PROFILE=${PROVISIONING_PROFILE}"
+            sh "mv Publish/Unity-iPhone.ipa Publish/${bundleId}-${version}.ipa"
+        }
+    }
+
     stage('上传') {
 
     }
