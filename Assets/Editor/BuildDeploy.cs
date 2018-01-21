@@ -111,9 +111,13 @@ public class BuildDeploy : Editor
             else if (arg == "-teamId")
             {
 //#if UNITY_IOS
-                // TeamID ios打包使用
-				PlayerSettings.iOS.appleEnableAutomaticSigning = true;
-                PlayerSettings.iOS.appleDeveloperTeamID = args[i + 1];
+                if (args[i + 1] != "")
+                {
+                    // TeamID ios打包使用
+                    PlayerSettings.iOS.appleEnableAutomaticSigning = true;
+                    PlayerSettings.iOS.appleDeveloperTeamID = args[i + 1];
+                }
+                
 //#endif
             }
         }
