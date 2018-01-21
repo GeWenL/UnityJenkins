@@ -5,6 +5,7 @@ node{
     def CODE_SIGN_IDENTITY = params.证书
     def PROVISIONING_PROFILE = params.PROVISIONING_PROFILE
     def platform = params.平台
+    def automatically = params.IsAutomatically
     def teamID = params.TeamID
     def bundleID = params.BundleID
 
@@ -23,7 +24,15 @@ node{
 
         def unitybin = '/Applications/Unity/Unity.app/Contents/MacOS/Unity'
         def build = 'OnAutoBuild'
- 		sh "${unitybin} -batchMode -quit -projectPath ${workspace} -executeMethod EditorToolMenu.${build} -bundleId ${bundleID} -platform ${platform} -teamId ${teamID}"
+        if (automatically)
+        {
+            sh "${unitybin} -batchMode -quit -projectPath ${workspace} -executeMethod EditorToolMenu.${build} -bundleId ${bundleID} -platform ${platform} -teamId ${teamID}"
+        }
+        else
+        {
+            sh "${unitybin} -batchMode -quit -projectPath ${workspace} -executeMethod EditorToolMenu.${build} -bundleId ${bundleID} -platform ${platform}
+        }
+ 		
     }
 
     stage('ios打包') {
@@ -31,8 +40,8 @@ node{
             // ios平台需要调用xcode打出ipa包
             sh "xcodebuild clean -project Publish/Unity-iPhone/Unity-iPhone.xcodeproj -configuration Release -alltargets"
             sh "xcodebuild archive -project Publish/Unity-iPhone/Unity-iPhone.xcodeproj -scheme Unity-iPhone -archivePath Publish/Unity-iPhone.xcarchive"
-            // sh "xcodebuild -exportArchive -archivePath Publish/Unity-iPhone.xcarchive -exportPath Publish -exportOptionsPlist Build/CodeSign/ios/exportOptions.plist  CODE_SIGN_IDENTITY=${CODE_SIGN_IDENTITY} PROVISIONING_PROFILE=${PROVISIONING_PROFILE}"
-            // sh "mv Publish/Unity-iPhone.ipa Publish/${bundleId}-${version}.ipa"
+            sh "xcodebuild -exportArchive -archivePath Publish/Unity-iPhone.xcarchive -exportPath Publish -exportOptionsPlist Build/CodeSign/ios/exportOptions.plist  CODE_SIGN_IDENTITY=${CODE_SIGN_IDENTITY} PROVISIONING_PROFILE=${PROVISIONING_PROFILE} DEVELOPMENT_TEAM=${teamID}"
+            sh "mv Publish/Unity-iPhone.ipa Publish/${bundleId}-${version}.ipa"
         }
     }
 

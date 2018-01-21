@@ -46,7 +46,7 @@ public class BuildDeploy : Editor
             File.Delete(PUBLISH_PATH + targetName);
         }
 
-		PlayerSettings.applicationIdentifier = _bundleIdentifier;
+		PlayerSettings.bundleIdentifier = "com.square.naoligame3";
         PlayerSettings.bundleVersion = version;
         PlayerSettings.iOS.buildNumber = _buildVersion;
 
