@@ -31,6 +31,9 @@ public class BuildDeploy : Editor
         var version = _version;
 		BuildTarget buildTarget = BuildTarget.iOS;  // 导出平台
 		string targetName = "Unity-iPhone";
+        BuildTargetGroup buildTargetGroup = BuildTargetGroup.iOS;
+
+
         if (!Directory.Exists(PUBLISH_PATH))
         {
             Directory.CreateDirectory(PUBLISH_PATH);
@@ -42,7 +45,7 @@ public class BuildDeploy : Editor
             File.Delete(PUBLISH_PATH + targetName);
         }
 
-		PlayerSettings.bundleIdentifier = _bundleIdentifier;
+		PlayerSettings.applicationIdentifier = _bundleIdentifier;
         PlayerSettings.bundleVersion = version;
 
 
@@ -53,9 +56,17 @@ public class BuildDeploy : Editor
             scenes[i] = EditorBuildSettings.scenes[i].path;
         }
 
+        BuildPlayerOptions options = new BuildPlayerOptions();
+        options.locationPathName = Path.GetFullPath(PUBLISH_PATH + targetName); // 注意5.6之后的版本，这个路径里面不能有Assets/这样的字符串，所以要转换为FullPath
+        options.scenes = scenes;
+        options.target = buildTarget;
+        options.targetGroup = buildTargetGroup;
+        options.options = BuildOptions.None; //uildOptions.CompressWithLz4;// | BuildOptions.AcceptExternalModificationsToPlayer;
+
+
         // 开始构建
         int startTime = Environment.TickCount;
-		string msg = BuildPipeline.BuildPlayer(scenes, Path.GetFullPath(PUBLISH_PATH + targetName),buildTarget, BuildOptions.None);
+		string msg = BuildPipeline.BuildPlayer(options);
         Debug.Log("打包耗时: " + (Environment.TickCount - startTime));
         if (!string.IsNullOrEmpty(msg))
         {
@@ -88,23 +99,23 @@ public class BuildDeploy : Editor
                 {
                     if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)
                     {
-                        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.Android);
+                        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
                     }
                 }
                 else if (platform == "ios")
                 {
                     if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.iOS)
                     {
-                        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.iOS);
+                        EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.iOS, BuildTarget.iOS);
                     }
                 }
             }
             else if (arg == "-teamId")
             {
-//#if UNITY_IOS
+#if UNITY_IOS
                 // TeamID ios打包使用
-//                PlayerSettings.iOS.appleDeveloperTeamID = args[i + 1];
-//#endif
+                PlayerSettings.iOS.appleDeveloperTeamID = args[i + 1];
+#endif
             }
         }
 
