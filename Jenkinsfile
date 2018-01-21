@@ -30,7 +30,7 @@ node{
         }
         else
         {
-            sh "${unitybin} -batchMode -quit -projectPath ${workspace} -executeMethod EditorToolMenu.${build} -bundleId ${bundleID} -platform ${platform}
+            sh "${unitybin} -batchMode -quit -projectPath ${workspace} -executeMethod EditorToolMenu.${build} -bundleId ${bundleID} -platform ${platform}"
         }
  		
     }
